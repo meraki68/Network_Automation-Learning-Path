@@ -1,0 +1,256 @@
+{
+  "name": "NETWORK DEVICE UPTIME MONITOR",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "id": "77dcace7-543d-4854-a4a8-137defdf01f8",
+      "name": "⏱ Schedule Trigger (Every 5 Min)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -880,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// DEVICE LIST — Edit this array to add/remove routers\n// Each entry: { name, ip, location }\n// ============================================================\nconst devices = [\n  { name: \"TP-Link Router – HQ\",     ip: \"192.168.0.1\",  location: \"Head Office\" },\n  { name: \"MikroTik – Branch A\",     ip: \"192.168.1.1\",  location: \"Branch Lagos\" },\n  { name: \"MikroTik – Branch B\",     ip: \"10.0.0.1\",     location: \"Branch Abuja\" }\n];\n\nreturn devices.map(d => ({ json: d }));\n"
+      },
+      "id": "672247ae-08cb-4f3d-b90f-3dea070cb5f4",
+      "name": "📋 Device List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// PING SIMULATION via HTTP HEAD (for web-reachable devices)\n// For internal LAN routers, replace this with an SSH ping\n// or use n8n's HTTP Request node targeting the router admin UI\n// ============================================================\nconst device = $input.item.json;\nconst startTime = Date.now();\n\nlet status = \"DOWN\";\nlet responseTime = null;\nlet errorMessage = \"\";\n\ntry {\n  // Attempt HTTP GET to router admin page (most routers expose port 80)\n  const url = `http://${device.ip}`;\n  const response = await fetch(url, {\n    method: \"GET\",\n    signal: AbortSignal.timeout(4000) // 4 second timeout\n  });\n  responseTime = Date.now() - startTime;\n  // Any HTTP response (even 401 Unauthorized) means device is UP\n  status = \"UP\";\n} catch (err) {\n  responseTime = Date.now() - startTime;\n  errorMessage = err.message || \"Unreachable\";\n  status = \"DOWN\";\n}\n\nconst now = new Date();\nconst timestamp = now.toISOString();\nconst dateStr = now.toLocaleDateString(\"en-NG\", { timeZone: \"Africa/Lagos\" });\nconst timeStr = now.toLocaleTimeString(\"en-NG\", { timeZone: \"Africa/Lagos\" });\n\nreturn [{\n  json: {\n    ...device,\n    status,\n    responseTime: responseTime ? `${responseTime}ms` : \"N/A\",\n    errorMessage,\n    timestamp,\n    dateStr,\n    timeStr,\n    checkedAt: `${dateStr} ${timeStr}`\n  }\n}];\n"
+      },
+      "id": "35a1c89f-b7b6-49de-8764-f67b7d566788",
+      "name": "🔍 Ping / Reachability Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "cond-down",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "DOWN",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "cfc0a699-b34f-4f9a-b4be-e6ff97685e1a",
+      "name": "🔀 Is Device DOWN?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1SYhNIAp0umxziM4SHcgaG3uiqLoqGT1RujLYPu24Ho4",
+          "mode": "list",
+          "cachedResultName": "Network Uptime Monitor",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SYhNIAp0umxziM4SHcgaG3uiqLoqGT1RujLYPu24Ho4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SYhNIAp0umxziM4SHcgaG3uiqLoqGT1RujLYPu24Ho4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Device Name": "={{ $json.name }}",
+            "Ip address": "={{ $json.ip }}",
+            "Location": "={{ $json.location }}",
+            "Status": "={{ $json.status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Device Name",
+              "displayName": "Device Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ip address",
+              "displayName": "Ip address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "d2410dde-e761-4025-a0d7-39ae91fd672a",
+      "name": "📊 Log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        176,
+        80
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Hce5bgleMRETWvFZ",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "merakiicubator68@gmail.com",
+        "subject": "Device Update",
+        "message": "={{ $json.status }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        -80
+      ],
+      "id": "10a46c0c-def9-40fb-a68c-6435c6c62307",
+      "name": "Send a message",
+      "webhookId": "b4f64ce1-da78-4f57-a767-7046ea404779",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "5Ka87hBJLOzHJmJS",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "⏱ Schedule Trigger (Every 5 Min)": {
+      "main": [
+        [
+          {
+            "node": "📋 Device List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📋 Device List": {
+      "main": [
+        [
+          {
+            "node": "🔍 Ping / Reachability Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔍 Ping / Reachability Check": {
+      "main": [
+        [
+          {
+            "node": "🔀 Is Device DOWN?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔀 Is Device DOWN?": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "📊 Log to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "07b43b6e-bcca-49bf-8961-cd789f3ee95d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "697ea3db04af9c0956720ffe374f39ab9d84a371668a41e09586e3f92e133415"
+  },
+  "id": "ymOiPhn4zAPX21ZV",
+  "tags": []
+}

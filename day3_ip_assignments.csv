@@ -1,0 +1,14 @@
+IP Address,Hostname,Device Type,Status,MAC Address,Assigned To,Last Seen,Notes
+10.10.1.1,RTR-CORE-01,Router,Assigned,AA:BB:CC:DD:EE:01,NOC Team,2024-01-15,Core router — do not reassign
+10.10.1.2,SW-CORE-01,Switch,Assigned,AA:BB:CC:DD:EE:02,NOC Team,2024-01-15,Core distribution switch
+10.10.1.10,SRV-FILE-01,Server,Assigned,AA:BB:CC:DD:EE:10,IT Department,2024-01-15,Primary file server
+10.10.1.11,SRV-PRINT-01,Printer,Assigned,AA:BB:CC:DD:EE:11,HR Department,2024-01-14,Floor 2 printer
+10.10.1.50,PC-HR-001,Workstation,Assigned,AA:BB:CC:DD:EE:50,Amaka Obi,2024-01-15,HR Department workstation
+10.10.1.51,PC-FIN-001,Workstation,Assigned,AA:BB:CC:DD:EE:51,Tunde Adeyemi,2024-01-15,Finance workstation
+10.10.1.100,,Workstation,Available,,,, 
+10.10.1.101,,Workstation,Available,,,,
+10.10.1.200,AP-FLOOR1-01,AP,Assigned,AA:BB:CC:DD:EE:C8,NOC Team,2024-01-15,Floor 1 WiFi access point
+10.10.2.1,RTR-MGMT-GW,Router,Assigned,BB:CC:DD:EE:FF:01,NOC Team,2024-01-15,Management gateway
+10.10.2.10,SW-ACCESS-01,Switch,Assigned,BB:CC:DD:EE:FF:10,NOC Team,2024-01-15,Access layer switch — Floor 1
+10.10.2.11,SW-ACCESS-02,Switch,Assigned,BB:CC:DD:EE:FF:11,NOC Team,2024-01-13,Access layer switch — Floor 2
+10.10.1.55,PC-OLD-ACCT,Workstation,Decommissioned,AA:BB:CC:DD:EE:55,Former Staff,2023-12-01,Returned to IT store

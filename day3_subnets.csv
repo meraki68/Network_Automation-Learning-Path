@@ -1,0 +1,7 @@
+Subnet Name,VLAN ID,Purpose,Location / Site,Notes
+10.10.1.0/24,10,LAN,Lagos HQ,User LAN segment — Gateway: 10.10.1.1
+10.10.2.0/24,20,Management,Lagos HQ,Network device management — Gateway: 10.10.2.1
+10.10.3.0/24,30,Voice,Lagos HQ,VoIP phones — Gateway: 10.10.3.1
+10.10.4.0/24,40,DMZ,Lagos HQ,Public-facing servers — Gateway: 10.10.4.1
+192.168.10.0/24,10,LAN,Branch-Abuja,User LAN — Gateway: 192.168.10.1
+10.10.5.0/30,50,WAN,Lagos HQ,ISP uplink — Point-to-point
