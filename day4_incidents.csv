@@ -1,0 +1,7 @@
+Incident ID,Title,Severity,Status,Affected Device / Segment,Root Cause,Reported By,Assigned To,Date Opened,Date Resolved,Resolution Notes
+1,Core switch unresponsive — total LAN outage,P1-Critical,Closed,SW-CORE-01,Power supply unit failed due to voltage surge,NOC Team,Sulaimon Uthman,2024-01-08,2024-01-08,Replaced PSU with spare unit. Added UPS monitoring to prevent recurrence.
+2,Intermittent packet loss on VLAN 20,P2-High,Resolved,VLAN 20 (Management),Duplex mismatch between SW-ACCESS-02 and upstream port,Tunde Adeyemi,Sulaimon Uthman,2024-01-10,2024-01-11,Set explicit full-duplex on both interfaces. Spanning tree re-converged.
+3,VoIP calls dropping every 30 minutes,P2-High,In Progress,VLAN 30 (Voice),Under investigation — QoS policy suspected,Amaka Obi,NOC Team,2024-01-14,,QoS markings being reviewed on RTR-CORE-01. Wireshark capture in progress.
+4,Printer SRV-PRINT-01 unreachable from VLAN 10,P3-Medium,Resolved,10.10.1.11,IP conflict — duplicate assignment from DHCP misconfiguration,HR Department,NOC Team,2024-01-12,2024-01-12,Reserved static IP in DHCP scope. Updated IP Assignments tracker.
+5,Slow internet speeds reported company-wide,P3-Medium,Closed,WAN uplink,ISP-side congestion during peak hours,All staff,NOC Team,2024-01-09,2024-01-09,Confirmed ISP issue via NOC ticket. No internal action required. ISP resolved within 2 hours.
+6,Access point AP-FLOOR1-01 offline,P4-Low,Open,10.10.1.200,Under investigation,NOC Team,NOC Team,2024-01-15,,Power cycling scheduled for maintenance window.

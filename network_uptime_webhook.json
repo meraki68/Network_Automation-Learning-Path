@@ -1,0 +1,175 @@
+{
+  "name": "Network Uptime Monitor – Webhook Receiver (Option A)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "network-ping",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "node-webhook",
+      "name": "🔔 Webhook Receiver",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "network-ping"
+    },
+    {
+      "parameters": {
+        "jsCode": "// The laptop sends an array of device results.\n// This node splits the array into individual items\n// so each device is processed separately.\nconst body = $input.item.json.body;\nconst devices = Array.isArray(body) ? body : [body];\nreturn devices.map(d => ({ json: d }));\n"
+      },
+      "id": "node-split",
+      "name": "🔁 Split Device Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {}
+      },
+      "id": "node-respond",
+      "name": "✅ Respond 200 OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [460, 480]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-down",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "DOWN",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "node-if-down",
+      "name": "🔀 Is Device DOWN?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "alerts@yourdomain.com",
+        "toEmail": "sulaimon@yourdomain.com",
+        "subject": "🔴 ALERT: {{ $json.name }} is DOWN – {{ $json.checkedAt }}",
+        "emailType": "html",
+        "message": "<!DOCTYPE html>\n<html>\n<body style=\"font-family: Arial, sans-serif; background:#f5f5f5; padding:20px;\">\n  <div style=\"max-width:600px; margin:auto; background:#fff; border-radius:8px; overflow:hidden; border:1px solid #e0e0e0;\">\n    <div style=\"background:#d32f2f; padding:20px; text-align:center;\">\n      <h1 style=\"color:#fff; margin:0;\">🔴 Network Alert</h1>\n    </div>\n    <div style=\"padding:30px;\">\n      <h2 style=\"color:#d32f2f;\">Device Unreachable</h2>\n      <table style=\"width:100%; border-collapse:collapse;\">\n        <tr><td style=\"padding:8px; font-weight:bold; background:#fafafa;\">Device Name</td><td style=\"padding:8px;\">{{ $json.name }}</td></tr>\n        <tr><td style=\"padding:8px; font-weight:bold; background:#fafafa;\">IP Address</td><td style=\"padding:8px;\">{{ $json.ip }}</td></tr>\n        <tr><td style=\"padding:8px; font-weight:bold; background:#fafafa;\">Location</td><td style=\"padding:8px;\">{{ $json.location }}</td></tr>\n        <tr><td style=\"padding:8px; font-weight:bold; background:#fafafa;\">Status</td><td style=\"padding:8px; color:#d32f2f; font-weight:bold;\">DOWN ❌</td></tr>\n        <tr><td style=\"padding:8px; font-weight:bold; background:#fafafa;\">Detected At</td><td style=\"padding:8px;\">{{ $json.checkedAt }}</td></tr>\n        <tr><td style=\"padding:8px; font-weight:bold; background:#fafafa;\">Error</td><td style=\"padding:8px; color:#888;\">{{ $json.errorMessage }}</td></tr>\n      </table>\n      <p style=\"margin-top:20px; color:#555;\">Please investigate immediately. This alert was generated automatically by your Network Uptime Monitor.</p>\n    </div>\n    <div style=\"background:#fafafa; padding:15px; text-align:center; color:#aaa; font-size:12px;\">\n      Powered by WAT Framework – n8n Automation\n    </div>\n  </div>\n</body>\n</html>"
+      },
+      "id": "node-email-alert",
+      "name": "📧 Send DOWN Alert Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [900, 200],
+      "credentials": {
+        "smtp": {
+          "id": "YOUR_SMTP_CREDENTIAL_ID",
+          "name": "Your SMTP Credentials"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Uptime Log",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.dateStr }}",
+            "Time": "={{ $json.timeStr }}",
+            "Device Name": "={{ $json.name }}",
+            "IP Address": "={{ $json.ip }}",
+            "Location": "={{ $json.location }}",
+            "Status": "={{ $json.status }}",
+            "Response Time": "={{ $json.responseTime }}",
+            "Error": "={{ $json.errorMessage }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "Date", "displayName": "Date", "required": false, "defaultMatch": false, "canBeUsedToMatch": true, "display": true, "type": "string", "removed": false },
+            { "id": "Time", "displayName": "Time", "required": false, "defaultMatch": false, "canBeUsedToMatch": true, "display": true, "type": "string", "removed": false },
+            { "id": "Device Name", "displayName": "Device Name", "required": false, "defaultMatch": false, "canBeUsedToMatch": true, "display": true, "type": "string", "removed": false },
+            { "id": "IP Address", "displayName": "IP Address", "required": false, "defaultMatch": false, "canBeUsedToMatch": true, "display": true, "type": "string", "removed": false },
+            { "id": "Location", "displayName": "Location", "required": false, "defaultMatch": false, "canBeUsedToMatch": true, "display": true, "type": "string", "removed": false },
+            { "id": "Status", "displayName": "Status", "required": false, "defaultMatch": false, "canBeUsedToMatch": true, "display": true, "type": "string", "removed": false },
+            { "id": "Response Time", "displayName": "Response Time", "required": false, "defaultMatch": false, "canBeUsedToMatch": true, "display": true, "type": "string", "removed": false },
+            { "id": "Error", "displayName": "Error", "required": false, "defaultMatch": false, "canBeUsedToMatch": true, "display": true, "type": "string", "removed": false }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-sheets-log",
+      "name": "📊 Log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [900, 400],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets OAuth2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "🔔 Webhook Receiver": {
+      "main": [
+        [
+          { "node": "🔁 Split Device Results", "type": "main", "index": 0 },
+          { "node": "✅ Respond 200 OK", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "🔁 Split Device Results": {
+      "main": [
+        [{ "node": "🔀 Is Device DOWN?", "type": "main", "index": 0 }]
+      ]
+    },
+    "🔀 Is Device DOWN?": {
+      "main": [
+        [{ "node": "📧 Send DOWN Alert Email", "type": "main", "index": 0 }],
+        [{ "node": "📊 Log to Google Sheets", "type": "main", "index": 0 }]
+      ]
+    },
+    "📧 Send DOWN Alert Email": {
+      "main": [
+        [{ "node": "📊 Log to Google Sheets", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": ["network", "monitoring", "uptime", "webhook", "WAT-Framework"],
+  "triggerCount": 0,
+  "updatedAt": "2026-04-08T00:00:00.000Z",
+  "versionId": "wat-network-monitor-v2-optionA"
+}
