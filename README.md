@@ -5,3 +5,4 @@
 - [Day 3](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-3)
 - [Day 4](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-4)
 - [Day 5](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-5)
+- [Day 6](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-6)
