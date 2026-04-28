@@ -1,0 +1,2 @@
+
+pyats shell --testbed-file my_testbed.yaml
