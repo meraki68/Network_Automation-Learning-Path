@@ -1,8 +1,13 @@
 # Network_Automation-Learning-Path
-# A 60 Days of Network Automation Challenge
-- [Day 1](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-1)
-- [Day 2](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-2)
-- [Day 3](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-3)
-- [Day 4](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-4)
-- [Day 5](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-5)
-- [Day 6](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-6)
+Day 7 of my 60-Day Network Automation Challenge ✅
+
+Today was all about moving from CiscoU workstation to building my own workstation
+
+These are what I did
+- I Set up a working Linux environment by using Ubuntu (via WSL) inside Visual Studio Code
+- I created and activated a virtual enviroment
+- I installed pyATS and created a testbed
+- I downloaded GNS for real device connectivity
+- I downloaded and installed the VM Worktation
+
+ Today is more of setting up
