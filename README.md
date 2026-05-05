@@ -1,10 +1,13 @@
 # Network_Automation-Learning-Path
-# A 60 Days of Network Automation Challenge
-- [Day 1](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-1)
-- [Day 2](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-2)
-- [Day 3](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-3)
-- [Day 4](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-4)
-- [Day 5](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-5)
-- [Day 6](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-6)
-- [Day 7](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-7)
-- [Day 8](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-8)
+Day 9 of my 60-Day Network Automation Challenge ✅
+
+Today i decided to dive into John Capabianco and Andy Lapteff Hello world of Ai for Network Engineers
+
+- Sign up a Netbox sandbox account and get the API Key
+- Download copilot extension in VSCode
+- Install Git in VSCode
+- Then activate the MCP Server, After encounting so many errors setting it up, i was able to achieve it
+- Then ask the server to list all the site in sandbox
+- Then i also ask few questions on how to get my hands dirty with projects
+
+ Today is more of setting up an Ai chatboot/server for a Network Engineer
