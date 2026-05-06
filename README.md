@@ -1,10 +1,15 @@
+# Network_Automation-Learning-Path
+Day 10 of my 60-Day Network Automation Challenge ✅
+
+Today i built an LLM i can train and use offline as a Network Engineer
+
+These are what I did
+- install LM Studio on my Windows
+- I download and configure the Meta Llama model
+- I started running AI prompts that are relevant to network engineering
+- I was able to build an Ai-enhanced workflows offline
 
 
 
-How to install LM Studio on macOS or Windows
 
-How to download and configure the Meta Llama model
 
-How to run AI prompts that are relevant to network engineering
-
-How to get started building your own AI-enhanced workflows—securely and offline
