@@ -1,11 +1,10 @@
-# Network_Automation-Learning-Path
-# A 60 Days of Network Automation Challenge
-- [Day 1](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-1)
-- [Day 2](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-2)
-- [Day 3](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-3)
-- [Day 4](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-4)
-- [Day 5](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-5)
-- [Day 6](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-6)
-- [Day 7](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-7)
-- [Day 8](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-8)
-- [Day 9](https://github.com/meraki68/Network_Automation-Learning-Path/tree/Day-9)
+
+
+
+How to install LM Studio on macOS or Windows
+
+How to download and configure the Meta Llama model
+
+How to run AI prompts that are relevant to network engineering
+
+How to get started building your own AI-enhanced workflows—securely and offline
